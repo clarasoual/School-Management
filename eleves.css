@@ -1,0 +1,128 @@
+body {
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background: #f6f2dc;
+    color: #5e503f;
+}
+
+/* ---------------- HEADER ---------------- */
+
+header {
+    background: #7b6a58;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    font-size: 18px;
+}
+
+header .left span {
+    font-family: "Pacifico", cursive;
+    font-size: 30px;
+}
+
+nav a {
+    margin: 0 15px;
+    color: white;
+    text-decoration: none;
+    font-weight: 300;
+}
+
+.logout {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* ---------------- PAGE CONTENT ---------------- */
+
+.main {
+    width: 85%;
+    margin: 40px auto;
+}
+
+.back-arrow {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* Titre */
+h1 {
+    font-size: 48px;
+    margin: 20px 0 40px 0;
+    font-weight: 400;
+    color: #5e503f;
+}
+
+/* ---------------- BARRE DE RECHERCHE ---------------- */
+
+.search-area {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 15px;
+}
+
+.search-area label {
+    font-size: 16px;
+}
+
+.search-area input {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    background: #c9b89d;
+    width: 230px;
+    outline: none;
+}
+
+.search-icon {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* ---------------- TABLEAU ---------------- */
+
+.table-container {
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    width: 75%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+th, td {
+    border: 2px solid #5e503f;
+    padding: 14px;
+    text-align: center;
+}
+
+th {
+    background: #eee7cf;
+    font-weight: 500;
+}
+
+.notes-link {
+    color: #5e503f;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* ---------------- FOOTER ---------------- */
+
+footer {
+    background: #7b6a58;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 60px;
+}
+
+footer a {
+    color: white;
+    margin: 0 25px;
+    text-decoration: none;
+    font-weight: 300;
+}

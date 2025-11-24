@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des élèves</title>
+    <link rel="stylesheet" href="eleves.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+    <div class="left"><span>MS</span></div>
+
+    <nav>
+        <a href="#">Accueil</a>
+        <a href="#">Élèves</a>
+        <a href="#">Matières</a>
+    </nav>
+
+    <div class="right">
+        <span class="logout">⇦</span>
+    </div>
+</header>
+
+<div class="main">
+
+    <a class="back-arrow">←</a>
+
+    <h1>Gestion des élèves</h1>
+
+    <div class="search-area">
+        <label>Rechercher</label>
+        <input type="text" placeholder="Nom, prénom, classe..">
+        <span class="search-icon">🔍</span>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Classe</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>SOUAL</td>
+                    <td>Clara</td>
+                    <td>6° C</td>
+                    <td><a class="notes-link">Voir notes</a></td>
+                </tr>
+                <tr>
+                    <td>CICUTTINI</td>
+                    <td>Nino</td>
+                    <td>6° A</td>
+                    <td><a class="notes-link">Voir notes</a></td>
+                </tr>
+
+                <!-- Lignes vides -->
+                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<footer>
+    <a href="#">Support</a>
+    <a href="#">FAQ</a>
+    <a href="#">Aide</a>
+</footer>
+
+</body>
+</html>

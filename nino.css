@@ -1,0 +1,153 @@
+/* ---------------- IMPORT DES POLICES ---------------- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Pacifico&family=Caveat:wght@500&display=swap');
+
+
+/* ---------------- STYLE GLOBAL ---------------- */
+body {
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background: #f6f2dc;
+    color: #5e503f;
+}
+
+/* ---------------- HEADER ---------------- */
+header {
+    background: #7b6a58;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    font-size: 18px;
+}
+
+header .left span {
+    font-family: "Pacifico", cursive;
+    font-size: 30px;
+}
+
+
+nav a {
+    margin: 0 15px;
+    color: white;
+    text-decoration: none;
+    font-weight: 300;
+}
+.right .logout {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* ---------------- MAIN / LAYOUT ---------------- */
+.main {
+    width: 85%;
+    margin: 40px auto;
+}
+
+/* back arrow (gauche haut) */
+.back-arrow {
+    display: inline-block;
+    font-size: 30px;
+    cursor: pointer;
+    color: #5e503f;
+    text-decoration: none;
+    margin-bottom: 18px;
+}
+
+/* ---------------- ENTETE ELEVE ---------------- */
+.student-header {
+    margin: 8px 0 30px 0;
+}
+
+/* petit label "Élève" */
+.student-header .label {
+    font-size: 16px;
+    color: #7b6a58;
+    margin-bottom: 6px;
+    font-weight: 400;
+}
+
+/* nom grand et centré à gauche (ressemble à l'image) */
+.student-name {
+    font-size: 48px;              /* grand nom */
+    font-weight: 400;
+    color: #5e503f;
+    margin: 0;
+    line-height: 1;
+}
+
+/* classe juste après le nom, plus petit et léger */
+.student-class {
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 26px;
+    color: #7b6a58;
+    font-weight: 300;
+}
+
+/* ---------------- ZONE TABLEAU ---------------- */
+.table-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.grades-table {
+    width: 75%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+/* lignes et colonnes avec traits épais comme sur l'image */
+.grades-table th,
+.grades-table td {
+    border: 2px solid #5e503f;
+    padding: 14px 18px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* en-têtes avec fond légèrement plus clair */
+.grades-table thead th {
+    background: #eee7cf;
+    font-weight: 500;
+}
+
+/* cellules texte : majuscules pour certaines colonnes, si besoin */
+/* exemple : nom de matière en normal, évaluation en majuscules léger */
+.grades-table td {
+    font-weight: 300;
+}
+
+/* style pour la note (centrée déjà) et appréciation plus sobre */
+.grades-table td:nth-child(3) {
+    font-weight: 500;
+}
+
+/* lien / texte d'appréciation (si stylisé) */
+.grades-table td a {
+    color: #5e503f;
+    text-decoration: underline;
+}
+
+/* ---------------- FOOTER ---------------- */
+footer {
+    background: #7b6a58;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 60px;
+}
+
+footer a {
+    color: white;
+    margin: 0 25px;
+    text-decoration: none;
+    font-weight: 300;
+}
+
+/* ---------------- RWD basique ---------------- */
+@media (max-width: 900px) {
+    .grades-table { width: 95%; }
+    .student-name { font-size: 36px; }
+    .student-class { font-size: 20px; }
+}

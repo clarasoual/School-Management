@@ -1,0 +1,138 @@
+/* ---------------- IMPORT POLICES ---------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Pacifico&family=Caveat:wght@500&display=swap');
+
+
+/* ---------------- STYLE GLOBAL ---------------- */
+
+body {
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background: #f6f2dc;
+    color: #5e503f;
+}
+
+
+/* ---------------- HEADER ---------------- */
+
+header {
+    background: #7b6a58;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    font-size: 18px;
+}
+
+
+header nav a {
+    margin: 0 15px;
+    color: white;
+    text-decoration: none;
+    font-weight: 300;
+}
+
+header .right {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+header .left span {
+    font-family: "Pacifico", cursive;
+    font-size: 30px;
+}
+
+
+/* ---------------- TITRE ---------------- */
+
+h1 {
+    text-align: center;
+    font-family: "Caveat", cursive;
+    font-size: 60px;
+    margin-top: 40px;
+    color: #5e503f;
+}
+
+
+/* ---------------- GRILLE DES CARTES ---------------- */
+
+.container {
+    width: 85%;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 35px;
+}
+
+
+/* ---------------- CARTES ---------------- */
+
+.card {
+    background: #a89679;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+    cursor: pointer;
+}
+
+.card-title {
+    background: rgba(255,255,255,0.2);
+    padding: 6px 14px;
+    display: inline-block;
+    border-radius: 4px;
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.card p {
+    margin: 6px 0;
+    font-size: 15px;
+    font-weight: 300;
+}
+
+
+/* ---------------- FLÈCHE ---------------- */
+
+.arrow {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    font-size: 26px;
+    opacity: 0.9;
+    transition: transform 0.3s ease;
+}
+
+.card:hover .arrow {
+    transform: translateX(4px);
+}
+
+
+/* ---------------- FOOTER ---------------- */
+
+footer {
+    background: #7b6a58;
+    text-align: center;
+    padding: 20px 0;
+    color: white;
+    margin-top: 50px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+footer a {
+    margin: 0 20px;
+    color: white;
+    text-decoration: none;
+    font-weight: 300;
+}
