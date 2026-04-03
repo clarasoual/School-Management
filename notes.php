@@ -11,20 +11,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer_note'])) {
 
 // Traitement du formulaire d'ajout de note individuelle
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_note'])) {
-    $stmtInsert = $pdo->prepare("
-        INSERT INTO notes (id_eleve, id_matiere, nom_evaluation, note, appreciation, date)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ");
-    $stmtInsert->execute([
-        (int)$_POST['eleve_id'],
-        (int)$_POST['matiere'],
-        trim($_POST['nom_evaluation']),
-        $_POST['note'],
-        trim($_POST['appreciation']),
-        $_POST['date']
-    ]);
-    header('Location: notes.php?eleve=' . $_POST['eleve_id'] . '&success=1');
-    exit;
+
+    $erreurs = [];
+
+    $nomEvaluation = trim($_POST['nom_evaluation'] ?? '');
+    $date = trim($_POST['date'] ?? '');
+    $idMatiere = (int)($_POST['matiere'] ?? 0);
+    $note = $_POST['note'] ?? '';
+    $appreciation = trim($_POST['appreciation'] ?? '');
+    $idEleve = (int)($_POST['eleve_id'] ?? 0);
+
+    // Validation PHP
+    if (empty($nomEvaluation)) {
+        $erreurs[] = "Le nom de l'évaluation est obligatoire.";
+    }
+    if (empty($date)) {
+        $erreurs[] = "La date est obligatoire.";
+    }
+    if ($idMatiere <= 0) {
+        $erreurs[] = "La matière est invalide.";
+    }
+    if ($note === '' || !is_numeric($note) || $note < 0 || $note > 20) {
+        $erreurs[] = "La note doit être un nombre entre 0 et 20.";
+    }
+
+    if (empty($erreurs)) {
+        $stmtInsert = $pdo->prepare("
+            INSERT INTO notes (id_eleve, id_matiere, nom_evaluation, note, appreciation, date)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
+        $stmtInsert->execute([$idEleve, $idMatiere, $nomEvaluation, $note, $appreciation, $date]);
+        header('Location: notes.php?eleve=' . $idEleve . '&success=1');
+        exit;
+    }
 }
 
 // Récupérer l'id de l'élève depuis l'URL
@@ -123,6 +142,9 @@ $moyenneGenerale = count($notes) > 0
             color: #5e503f;
             outline: none;
         }
+        .modal-field input.erreur {
+            border-color: #a05050;
+        }
         .modal-buttons {
             display: flex;
             gap: 10px;
@@ -177,6 +199,14 @@ $moyenneGenerale = count($notes) > 0
             border-radius: 6px;
             margin-bottom: 20px;
             font-size: 14px;
+        }
+        .error-msg {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 13px;
         }
         .btn-supprimer {
             background: none;
@@ -275,20 +305,29 @@ $moyenneGenerale = count($notes) > 0
 </main>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modal">
+<div class="modal-overlay" id="modal" <?= !empty($erreurs) ? 'class="modal-overlay active"' : '' ?>>
     <div class="modal">
         <h2>Ajouter une note</h2>
-        <form method="POST" action="notes.php">
+
+        <?php if (!empty($erreurs)): ?>
+            <div class="error-msg">
+                <?php foreach ($erreurs as $e): ?>
+                    <div>⚠ <?= htmlspecialchars($e) ?></div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <form method="POST" action="notes.php" id="form-note" onsubmit="return validerFormulaire()">
             <input type="hidden" name="ajouter_note" value="1">
             <input type="hidden" name="eleve_id" value="<?= $eleveId ?>">
 
             <div class="modal-field">
                 <label>Évaluation</label>
-                <input type="text" name="nom_evaluation" placeholder="ex: DS-3" required>
+                <input type="text" name="nom_evaluation" id="champ-evaluation" placeholder="ex: DS-3" required>
             </div>
             <div class="modal-field">
                 <label>Date</label>
-                <input type="date" name="date" required>
+                <input type="date" name="date" id="champ-date" required>
             </div>
             <div class="modal-field">
                 <label>Matière</label>
@@ -300,7 +339,7 @@ $moyenneGenerale = count($notes) > 0
             </div>
             <div class="modal-field">
                 <label>Note /20</label>
-                <input type="number" name="note" min="0" max="20" step="0.5" required>
+                <input type="number" name="note" id="champ-note" min="0" max="20" step="0.5" required>
             </div>
             <div class="modal-field">
                 <label>Appréciation</label>
@@ -317,6 +356,38 @@ $moyenneGenerale = count($notes) > 0
 
 <script>
 const toutesLesNotes = <?= json_encode($notes) ?>;
+
+// Validation JS avant envoi
+function validerFormulaire() {
+    let valide = true;
+
+    const evaluation = document.getElementById('champ-evaluation');
+    const date = document.getElementById('champ-date');
+    const note = document.getElementById('champ-note');
+
+    // Réinitialiser les erreurs
+    [evaluation, date, note].forEach(c => c.classList.remove('erreur'));
+
+    if (evaluation.value.trim() === '') {
+        evaluation.classList.add('erreur');
+        valide = false;
+    }
+    if (date.value === '') {
+        date.classList.add('erreur');
+        valide = false;
+    }
+    const noteVal = parseFloat(note.value);
+    if (isNaN(noteVal) || noteVal < 0 || noteVal > 20) {
+        note.classList.add('erreur');
+        valide = false;
+    }
+
+    if (!valide) {
+        alert('Veuillez corriger les champs en rouge avant d\'enregistrer.');
+    }
+
+    return valide;
+}
 
 function filtrerNotes(filtre) {
     const rows = document.querySelectorAll('#tbody-notes tr:not(.vide)');
