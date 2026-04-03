@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Élève — Notes</title>
+    <link rel="stylesheet" href="nino.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Pacifico&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+    <div class="left"><span>MS</span></div>
+    <nav>
+        <a href="index.html">Classes</a>
+        <a href="eleves.html">Élèves</a>
+    </nav>
+    <div class="right">Enseignant : Léa Dupuis</div>
+</header>
+
+<main class="main">
+    <a class="back-arrow" id="lien-retour" title="Retour">←</a>
+
+    <div class="student-header">
+        <div class="label">Élève</div>
+        <div class="student-name" id="nom-eleve">—</div>
+    </div>
+
+    <div class="search-area">
+        <label>Matière</label>
+        <select id="select-matiere">
+            <option value="toutes">Toutes les matières</option>
+        </select>
+        <span id="moyenne-display"></span>
+    </div>
+
+    <div class="table-container">
+        <table class="grades-table" aria-label="Table des évaluations">
+            <thead>
+                <tr>
+                    <th>Matière</th>
+                    <th>Évaluation</th>
+                    <th>Note</th>
+                    <th>Appréciation</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-notes">
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer>
+    <a href="#">Support</a>
+    <a href="#">FAQ</a>
+    <a href="#">Aide</a>
+</footer>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const nom = params.get('nom') || '';
+const prenom = params.get('prenom') || '';
+const classe = params.get('classe') || '';
+
+const nomClasse = {
+  '6A': '6° A', '6C': '6° C', '4C': '4° C', '3C': '3° C', '5B': '5° B'
+};
+
+document.getElementById('nom-eleve').textContent =
+  prenom + ' ' + nom + (classe ? ' — ' + (nomClasse[classe] || classe) : '');
+
+document.title = 'Élève — ' + prenom + ' ' + nom;
+
+document.getElementById('lien-retour').href = 'eleves.html?classe=' + classe;
+
+const notesParEleve = {
+  'CICUTTINI_Nino': [
+    { matiere: 'Histoire',      eval: 'DS-2',        note: '14/20', appreciation: 'Peut mieux faire' },
+    { matiere: 'Mathématiques', eval: 'Contrôle-1',  note: '17/20', appreciation: 'Très bon travail' },
+    { matiere: 'Français',      eval: 'Rédaction',   note: '13/20', appreciation: 'Bon effort' },
+  ],
+  'SOUAL_Clara': [
+    { matiere: 'Mathématiques', eval: 'Contrôle-1',  note: '19/20', appreciation: 'Excellent' },
+    { matiere: 'Français',      eval: 'Dictée',      note: '16/20', appreciation: 'Très bien' },
+    { matiere: 'Sciences',      eval: 'TP-1',        note: '15/20', appreciation: 'Bonne participation' },
+  ],
+  'MARTIN_Emma': [
+    { matiere: 'Français',      eval: 'Rédaction',   note: '18/20', appreciation: 'Excellent travail' },
+    { matiere: 'Histoire',      eval: 'DS-1',        note: '12/20', appreciation: 'Des efforts à faire' },
+    { matiere: 'Anglais',       eval: 'Expression',  note: '16/20', appreciation: 'Très bien' },
+  ],
+  'BERNARD_Lucas': [
+    { matiere: 'Mathématiques', eval: 'Contrôle-2',  note: '11/20', appreciation: 'Doit revoir les bases' },
+    { matiere: 'Sciences',      eval: 'TP-2',        note: '14/20', appreciation: 'Correct' },
+    { matiere: 'Histoire',      eval: 'DS-2',        note: '13/20', appreciation: 'Peut mieux faire' },
+  ],
+  'DUBOIS_Léa': [
+    { matiere: 'Anglais',       eval: 'Compréhension', note: '20/20', appreciation: 'Parfait' },
+    { matiere: 'Français',      eval: 'Rédaction',     note: '17/20', appreciation: 'Très bien' },
+    { matiere: 'Mathématiques', eval: 'Contrôle-1',    note: '15/20', appreciation: 'Bien' },
+  ],
+  'PETIT_Hugo': [
+    { matiere: 'Sciences',      eval: 'TP-1',        note: '12/20', appreciation: 'Passable' },
+    { matiere: 'Mathématiques', eval: 'Contrôle-2',  note: '10/20', appreciation: 'Insuffisant' },
+    { matiere: 'Histoire',      eval: 'DS-1',        note: '14/20', appreciation: 'Assez bien' },
+  ],
+  'MOREAU_Inès': [
+    { matiere: 'Français',      eval: 'Dictée',      note: '15/20', appreciation: 'Bien' },
+    { matiere: 'Anglais',       eval: 'Expression',  note: '18/20', appreciation: 'Excellent' },
+    { matiere: 'Sciences',      eval: 'TP-2',        note: '13/20', appreciation: 'Correct' },
+  ],
+  'SIMON_Tom': [
+    { matiere: 'Mathématiques', eval: 'Contrôle-1',  note: '16/20', appreciation: 'Bien' },
+    { matiere: 'Histoire',      eval: 'DS-2',        note: '11/20', appreciation: 'Des lacunes' },
+    { matiere: 'Français',      eval: 'Rédaction',   note: '14/20', appreciation: 'Assez bien' },
+  ],
+};
+
+const cle = nom + '_' + prenom;
+const notes = notesParEleve[cle] || [];
+
+const matieres = [...new Set(notes.map(n => n.matiere))];
+const select = document.getElementById('select-matiere');
+matieres.forEach(function(m) {
+  const option = document.createElement('option');
+  option.value = m;
+  option.textContent = m;
+  select.appendChild(option);
+});
+
+function calculerMoyenne(liste) {
+  if (liste.length === 0) return null;
+  const total = liste.reduce(function(acc, n) {
+    return acc + parseFloat(n.note.split('/')[0]);
+  }, 0);
+  return (total / liste.length).toFixed(2);
+}
+
+function afficherNotes(filtre) {
+  const tbody = document.getElementById('tbody-notes');
+  tbody.innerHTML = '';
+
+  const notesFiltrees = filtre === 'toutes' ? notes : notes.filter(n => n.matiere === filtre);
+
+  notesFiltrees.forEach(function(n) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${n.matiere}</td><td>${n.eval}</td><td>${n.note}</td><td>${n.appreciation}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  const lignesVides = 6 - notesFiltrees.length;
+  for (let i = 0; i < lignesVides; i++) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td></td><td></td><td></td><td></td>';
+    tbody.appendChild(tr);
+  }
+
+  const moyenne = calculerMoyenne(notesFiltrees);
+  const label = filtre === 'toutes' ? 'Moyenne générale' : 'Moyenne ' + filtre;
+  document.getElementById('moyenne-display').textContent = moyenne !== null ? label + ' : ' + moyenne + '/20' : '';
+}
+
+afficherNotes('toutes');
+
+select.addEventListener('change', function() {
+  afficherNotes(this.value);
+});
+</script>
+
+</body>
+</html>

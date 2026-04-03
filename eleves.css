@@ -1,12 +1,23 @@
+/* ---------------- IMPORT POLICES ---------------- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Pacifico&family=Caveat:wght@500&family=Dancing+Script:wght@600&display=swap');
+
+/* ---------------- STYLE GLOBAL ---------------- */
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     font-family: "Montserrat", sans-serif;
     background: #f6f2dc;
     color: #5e503f;
 }
 
-/* ---------------- HEADER ---------------- */
 
+/* ---------------- HEADER ---------------- */
 header {
     background: #7b6a58;
     color: white;
@@ -18,44 +29,61 @@ header {
 }
 
 header .left span {
-    font-family: "Pacifico", cursive;
+    font-family: "Dancing Script", cursive;
     font-size: 30px;
+    line-height: 1;
 }
 
-nav a {
+header nav a {
     margin: 0 15px;
     color: white;
     text-decoration: none;
     font-weight: 300;
 }
 
+header .right {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+header .left,
+header .right {
+    min-width: 180px;
+}
+
 .logout {
     font-size: 22px;
     cursor: pointer;
+    color: white;
 }
 
-/* ---------------- PAGE CONTENT ---------------- */
 
+/* ---------------- PAGE CONTENT ---------------- */
 .main {
     width: 85%;
     margin: 40px auto;
+    flex: 1;
 }
 
 .back-arrow {
     font-size: 30px;
     cursor: pointer;
+    color: #5e503f;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 10px;
 }
 
-/* Titre */
 h1 {
     font-size: 48px;
     margin: 20px 0 40px 0;
     font-weight: 400;
     color: #5e503f;
+    font-family: "Caveat", cursive;
 }
 
-/* ---------------- BARRE DE RECHERCHE ---------------- */
 
+/* ---------------- MENU DÉROULANT ---------------- */
 .search-area {
     display: flex;
     align-items: center;
@@ -67,25 +95,24 @@ h1 {
     font-size: 16px;
 }
 
-.search-area input {
+.search-area select {
     padding: 10px 15px;
     border: none;
     border-radius: 6px;
     background: #c9b89d;
-    width: 230px;
+    color: #5e503f;
+    font-family: "Montserrat", sans-serif;
+    font-size: 15px;
     outline: none;
-}
-
-.search-icon {
-    font-size: 22px;
     cursor: pointer;
 }
 
-/* ---------------- TABLEAU ---------------- */
 
+/* ---------------- TABLEAU ---------------- */
 .table-container {
     display: flex;
     justify-content: center;
+    overflow-x: auto;
 }
 
 table {
@@ -111,13 +138,14 @@ th {
     cursor: pointer;
 }
 
-/* ---------------- FOOTER ---------------- */
 
+/* ---------------- FOOTER ---------------- */
 footer {
     background: #7b6a58;
     text-align: center;
     padding: 20px 0;
-    margin-top: 60px;
+    margin-top: auto;
+    color: white;
 }
 
 footer a {
@@ -125,4 +153,53 @@ footer a {
     margin: 0 25px;
     text-decoration: none;
     font-weight: 300;
+}
+
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px 20px;
+        text-align: center;
+    }
+
+    header .left,
+    header .right {
+        min-width: unset;
+    }
+
+    header nav a {
+        margin: 0 10px;
+        font-size: 14px;
+    }
+
+    header .right {
+        font-size: 12px;
+    }
+
+    h1 {
+        font-size: 34px;
+        margin: 16px 0 24px 0;
+    }
+
+    .main {
+        width: 95%;
+        margin: 24px auto;
+    }
+
+    table {
+        width: 100%;
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 10px 6px;
+    }
+
+    footer a {
+        margin: 0 10px;
+        font-size: 12px;
+    }
 }
