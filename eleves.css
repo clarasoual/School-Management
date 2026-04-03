@@ -203,3 +203,128 @@ footer a {
         font-size: 12px;
     }
 }
+
+/* ---------------- MODAL ---------------- */
+
+ .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 40px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: #f6f2dc;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 750px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .modal h2 {
+            font-family: "Caveat", cursive;
+            font-size: 32px;
+            color: #5e503f;
+            margin: 0 0 20px 0;
+        }
+        .modal-fields {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .modal-fields label {
+            font-size: 13px;
+            color: #7b6a58;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .modal-fields input,
+        .modal-fields select {
+            padding: 8px 12px;
+            border: 2px solid #5e503f;
+            border-radius: 6px;
+            background: #fff;
+            font-family: "Montserrat", sans-serif;
+            font-size: 14px;
+            color: #5e503f;
+            outline: none;
+        }
+        .modal table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .modal th, .modal td {
+            border: 2px solid #5e503f;
+            padding: 10px;
+            text-align: center;
+        }
+        .modal thead th {
+            background: #eee7cf;
+            font-weight: 500;
+        }
+        .modal input[type="number"],
+        .modal input[type="text"] {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #c9b89d;
+            border-radius: 4px;
+            font-family: "Montserrat", sans-serif;
+            font-size: 13px;
+            background: #fff;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .btn-valider {
+            background: #7b6a58;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-family: "Montserrat", sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-valider:hover { background: #5e503f; }
+        .btn-annuler {
+            background: transparent;
+            color: #5e503f;
+            border: 2px solid #5e503f;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-family: "Montserrat", sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-ajouter {
+            background: #7b6a58;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-family: "Montserrat", sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+        .btn-ajouter:hover { background: #5e503f; }
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
