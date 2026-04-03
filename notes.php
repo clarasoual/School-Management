@@ -1,6 +1,14 @@
 <?php
 require 'connexion.php';
 
+// Suppression d'une note
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer_note'])) {
+    $stmtDelete = $pdo->prepare("DELETE FROM notes WHERE id = ? AND id_eleve = ?");
+    $stmtDelete->execute([(int)$_POST['note_id'], (int)$_POST['eleve_id']]);
+    header('Location: notes.php?eleve=' . $_POST['eleve_id'] . '&deleted=1');
+    exit;
+}
+
 // Traitement du formulaire d'ajout de note individuelle
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_note'])) {
     $stmtInsert = $pdo->prepare("
@@ -15,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_note'])) {
         trim($_POST['appreciation']),
         $_POST['date']
     ]);
-
     header('Location: notes.php?eleve=' . $_POST['eleve_id'] . '&success=1');
     exit;
 }
@@ -33,9 +40,9 @@ $stmtEleve = $pdo->prepare("
 $stmtEleve->execute([$eleveId]);
 $eleve = $stmtEleve->fetch(PDO::FETCH_ASSOC);
 
-// Récupérer toutes les notes de l'élève
+// Récupérer toutes les notes de l'élève (avec l'id de la note)
 $stmtNotes = $pdo->prepare("
-    SELECT n.nom_evaluation, n.note, n.appreciation, m.nom AS matiere, m.id AS id_matiere
+    SELECT n.id, n.nom_evaluation, n.note, n.appreciation, m.nom AS matiere, m.id AS id_matiere
     FROM notes n
     LEFT JOIN matieres m ON n.id_matiere = m.id
     WHERE n.id_eleve = ?
@@ -163,6 +170,23 @@ $moyenneGenerale = count($notes) > 0
             margin-bottom: 20px;
             font-size: 14px;
         }
+        .delete-msg {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .btn-supprimer {
+            background: none;
+            border: none;
+            color: #a05050;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0;
+        }
+        .btn-supprimer:hover { color: #7b0000; }
     </style>
 </head>
 
@@ -190,6 +214,9 @@ $moyenneGenerale = count($notes) > 0
 
     <?php if (isset($_GET['success'])): ?>
         <div class="success-msg">✓ La note a bien été enregistrée !</div>
+    <?php endif; ?>
+    <?php if (isset($_GET['deleted'])): ?>
+        <div class="delete-msg">✓ La note a bien été supprimée.</div>
     <?php endif; ?>
 
     <button class="btn-ajouter" onclick="document.getElementById('modal').classList.add('active')">
@@ -219,6 +246,7 @@ $moyenneGenerale = count($notes) > 0
                     <th>Évaluation</th>
                     <th>Note</th>
                     <th>Appréciation</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody id="tbody-notes">
@@ -228,10 +256,18 @@ $moyenneGenerale = count($notes) > 0
                     <td><?= htmlspecialchars($note['nom_evaluation']) ?></td>
                     <td><?= number_format($note['note'], 2, ',', '') ?>/20</td>
                     <td><?= htmlspecialchars($note['appreciation']) ?></td>
+                    <td>
+                        <form method="POST" action="notes.php" onsubmit="return confirm('Supprimer cette note ?')">
+                            <input type="hidden" name="supprimer_note" value="1">
+                            <input type="hidden" name="note_id" value="<?= $note['id'] ?>">
+                            <input type="hidden" name="eleve_id" value="<?= $eleveId ?>">
+                            <button type="submit" class="btn-supprimer" title="Supprimer">✕</button>
+                        </form>
+                    </td>
                 </tr>
                 <?php endforeach; ?>
                 <?php for ($i = count($notes); $i < 6; $i++): ?>
-                <tr class="vide"><td></td><td></td><td></td><td></td></tr>
+                <tr class="vide"><td></td><td></td><td></td><td></td><td></td></tr>
                 <?php endfor; ?>
             </tbody>
         </table>
