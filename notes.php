@@ -1,10 +1,23 @@
 <?php
 require 'connexion.php';
+require 'connexion_mongo.php';
+
+// Collection MongoDB pour les logs
+$logs = $db->logs;
 
 // Suppression d'une note
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer_note'])) {
     $stmtDelete = $pdo->prepare("DELETE FROM notes WHERE id = ? AND id_eleve = ?");
     $stmtDelete->execute([(int)$_POST['note_id'], (int)$_POST['eleve_id']]);
+
+    // Log MongoDB
+    $logs->insertOne([
+        'action' => 'suppression_note',
+        'note_id' => (int)$_POST['note_id'],
+        'eleve_id' => (int)$_POST['eleve_id'],
+        'timestamp' => new MongoDB\BSON\UTCDateTime()
+    ]);
+
     header('Location: notes.php?eleve=' . $_POST['eleve_id'] . '&deleted=1');
     exit;
 }
@@ -41,6 +54,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_note'])) {
             VALUES (?, ?, ?, ?, ?, ?)
         ");
         $stmtInsert->execute([$idEleve, $idMatiere, $nomEvaluation, $note, $appreciation, $date]);
+
+        // Log MongoDB
+        $logs->insertOne([
+            'action' => 'ajout_note',
+            'eleve_id' => $idEleve,
+            'matiere_id' => $idMatiere,
+            'evaluation' => $nomEvaluation,
+            'note' => (float)$note,
+            'appreciation' => $appreciation,
+            'date_evaluation' => $date,
+            'timestamp' => new MongoDB\BSON\UTCDateTime()
+        ]);
+
         header('Location: notes.php?eleve=' . $idEleve . '&success=1');
         exit;
     }
@@ -357,7 +383,6 @@ $moyenneGenerale = count($notes) > 0
 <script>
 const toutesLesNotes = <?= json_encode($notes) ?>;
 
-// Validation JS avant envoi
 function validerFormulaire() {
     let valide = true;
 
@@ -365,7 +390,6 @@ function validerFormulaire() {
     const date = document.getElementById('champ-date');
     const note = document.getElementById('champ-note');
 
-    // Réinitialiser les erreurs
     [evaluation, date, note].forEach(c => c.classList.remove('erreur'));
 
     if (evaluation.value.trim() === '') {
