@@ -1,7 +1,6 @@
 <?php
 require 'connexion.php';
 
-// Traitement du formulaire d'ajout de notes
 $erreurs = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_notes'])) {
@@ -9,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_notes'])) {
     $nomEvaluation = trim($_POST['nom_evaluation'] ?? '');
     $date = trim($_POST['date'] ?? '');
 
-    // Validation PHP
     if (empty($nomEvaluation)) {
         $erreurs[] = "Le nom de l'évaluation est obligatoire.";
     }
@@ -20,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_notes'])) {
         $erreurs[] = "La matière est invalide.";
     }
 
-    // Vérifier qu'au moins une note est remplie et que toutes les notes sont valides
     $notesValides = false;
     if (isset($_POST['notes'])) {
         foreach ($_POST['notes'] as $idEleve => $note) {
@@ -53,16 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_notes'])) {
     }
 }
 
-// Récupérer toutes les classes pour le menu déroulant
 $stmtClasses = $pdo->query("
-    SELECT c.id, c.nom AS nom_classe, CONCAT(p.prenom, ' ', p.nom) AS professeur
+    SELECT c.id, c.nom AS nom_classe, p.prenom || ' ' || p.nom AS professeur
     FROM classes c
     LEFT JOIN professeurs p ON c.id_professeur = p.id
     ORDER BY c.nom
 ");
 $classes = $stmtClasses->fetchAll(PDO::FETCH_ASSOC);
 
-// Récupérer la classe sélectionnée
 $classeId = isset($_GET['classe']) ? (int)$_GET['classe'] : $classes[0]['id'];
 if (!empty($_POST['classe_id'])) $classeId = (int)$_POST['classe_id'];
 
@@ -74,7 +69,6 @@ foreach ($classes as $c) {
     }
 }
 
-// Récupérer les élèves de la classe
 $stmtEleves = $pdo->prepare("
     SELECT id, nom, prenom FROM eleves
     WHERE id_classe = ?
@@ -83,7 +77,6 @@ $stmtEleves = $pdo->prepare("
 $stmtEleves->execute([$classeId]);
 $eleves = $stmtEleves->fetchAll(PDO::FETCH_ASSOC);
 
-// Récupérer les matières pour le formulaire
 $matieres = $pdo->query("SELECT id, nom FROM matieres ORDER BY nom")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
