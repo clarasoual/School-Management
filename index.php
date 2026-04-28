@@ -42,8 +42,7 @@ $classes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div class="card" onclick="goToClass(<?= $classe['id'] ?>)" style="cursor:pointer;">
     <div class="card-title"><?= htmlspecialchars($classe['nom_classe']) ?></div>
     <p><strong>Élèves :</strong> <?= $classe['nb_eleves'] ?></p>
-    <p><strong>Moyenne :</strong> <?= number_format($classe['moyenne'], 2, ',', '') ?></p>
-    <p><strong>Prof. Principal :</strong> <?= htmlspecialchars($classe['professeur']) ?></p>
+<p><strong>Moyenne :</strong> <?= $classe['moyenne'] !== null ? number_format($classe['moyenne'], 2, ',', '') . '/20' : 'Aucune note' ?></p>    <p><strong>Prof. Principal :</strong> <?= htmlspecialchars($classe['professeur']) ?></p>
     <div class="arrow">➜</div>
 </div>
 <?php endforeach; ?>

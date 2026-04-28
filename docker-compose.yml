@@ -1,0 +1,47 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8083:80"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: school_management
+      DB_USER: root
+      DB_PASS: root
+      MONGO_HOST: mongodb
+      MONGO_PORT: 27017
+    depends_on:
+      - db
+      - mongodb
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: school_management
+    volumes:
+      - "./school_management.sql:/docker-entrypoint-initdb.d/init.sql"
+
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - "27018:27017"
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "8084:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8085:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    depends_on:
+      - mongodb
