@@ -1,10 +1,10 @@
 FROM php:8.2-fpm
 
-RUN apt-get update && apt-get install -y nginx libssl-dev pkg-config \
+RUN apt-get update && apt-get install -y nginx libssl-dev pkg-config libpq-dev \
     && rm -rf /var/lib/apt/lists/* \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb \
-    && docker-php-ext-install pdo pdo_mysql
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql
 
 COPY . /var/www/html/
 COPY nginx.conf /etc/nginx/sites-available/default
